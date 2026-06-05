@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EXIT 404: VIREX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="auth-screen">
+    <div id="login-box" class="auth-content">
+        <h2>SYSTEM LOGIN</h2>
+        <input type="text" id="login-username" class="auth-input" placeholder="Username" autocomplete="off">
+        <input type="password" id="login-password" class="auth-input" placeholder="Password">
+        <p id="login-error" class="auth-error"></p>
+        <button id="login-submit" class="auth-btn">ACCESS CORE</button>
+        <p class="auth-toggle">New Architect? <span onclick="toggleAuth('register')">Initialize Identity</span></p>
+    </div>
+
+    <div id="register-box" class="auth-content hidden">
+        <h2>NEW IDENTITY</h2>
+        <input type="text" id="reg-username" class="auth-input" placeholder="Unique Username" autocomplete="off">
+        <input type="password" id="reg-password" class="auth-input" placeholder="Password">
+        <input type="text" id="reg-ingame" class="auth-input" placeholder="In-game Name (e.g. John)" maxlength="20">
+        <p id="reg-error" class="auth-error"></p>
+        <button id="reg-submit" class="auth-btn">CREATE PROFILE</button>
+        <p class="auth-toggle">Existing User? <span onclick="toggleAuth('login')">Return to Login</span></p>
+    </div>
+</div>
+
+<div id="menu" class="hidden">
+    <div id="menu-bg"></div>
+    <div id="menu-buttons">
+        <h2 id="menu-welcome" style="color:#00ffcc; font-family:'Courier New', monospace; margin-left:18px;"></h2>
+        <button class="menu-btn" id="start-btn">START</button>
+        <button class="menu-btn" id="load-btn">LOAD</button>
+        <button class="menu-btn" id="leaderboard-btn">LEADERBOARD</button>
+        <button class="menu-btn" id="endings-btn">ENDINGS</button>
+        <button class="menu-btn" id="logout-btn" onclick="location.reload()">LOGOUT</button>
+    </div>
+</div>
+
+<div id="leaderboard-screen" class="hidden">
+    <div class="lb-content">
+        <h2>NEURAL RANKINGS</h2>
+        <div id="lb-list"></div>
+        <button id="close-lb-btn">RETURN TO MENU</button>
+    </div>
+</div>
+
+<div id="endings-screen" class="hidden">
+    <div class="endings-content">
+        <h2>ENDINGS ARCHIVE</h2>
+        <div id="endings-container">
+            <div class="endings-row">
+                <div class="ending-box" id="ending-1" onclick="showEndingDetails('ending1')">
+                    <div class="ending-image">
+                        <img id="ending-1-img" src="assets/ui/locked.png" alt="Ending 1">
+                    </div>
+                    <div class="ending-name">ENDING 1</div>
+                    <div class="ending-status" id="ending-1-status">LOCKED</div>
+                </div>
+                <div class="ending-box" id="ending-2" onclick="showEndingDetails('ending2')">
+                    <div class="ending-image">
+                        <img id="ending-2-img" src="assets/ui/locked.png" alt="Ending 2">
+                    </div>
+                    <div class="ending-name">ENDING 2</div>
+                    <div class="ending-status" id="ending-2-status">LOCKED</div>
+                </div>
+            </div>
+            <div class="endings-row">
+                <div class="ending-box" id="ending-3" onclick="showEndingDetails('ending3')">
+                    <div class="ending-image">
+                        <img id="ending-3-img" src="assets/ui/locked.png" alt="Ending 3">
+                    </div>
+                    <div class="ending-name">ENDING 3</div>
+                    <div class="ending-status" id="ending-3-status">LOCKED</div>
+                </div>
+                <div class="ending-box" id="ending-4" onclick="showEndingDetails('ending4')">
+                    <div class="ending-image">
+                        <img id="ending-4-img" src="assets/ui/locked.png" alt="Ending 4">
+                    </div>
+                    <div class="ending-name">ENDING 4</div>
+                    <div class="ending-status" id="ending-4-status">LOCKED</div>
+                </div>
+            </div>
+        </div>
+        <button id="close-endings-btn">RETURN TO MENU</button>
+    </div>
+</div>
+
+<div id="choice-screen" class="hidden">
+    <div class="choice-content">
+        <h2 id="choice-title">MAKE A CHOICE</h2>
+        <p id="choice-text"></p>
+        <div id="choice-buttons">
+            <button id="choice-1-btn" class="choice-btn"></button>
+            <button id="choice-2-btn" class="choice-btn"></button>
+        </div>
+    </div>
+</div>
+
+<div id="slot-menu" class="hidden">
+    <div id="slot-menu-content">
+        <h2 id="slot-menu-title">SELECT SLOT</h2>
+        <div id="slots-container">
+            <div class="slot-row">
+                <button class="slot-btn" id="slot-1-btn" onclick="handleSlot(1)">Slot 1: Empty</button>
+                <button class="delete-slot-btn" id="delete-1-btn" onclick="deleteSlot(1)">🗑️</button>
+            </div>
+            <div class="slot-row">
+                <button class="slot-btn" id="slot-2-btn" onclick="handleSlot(2)">Slot 2: Empty</button>
+                <button class="delete-slot-btn" id="delete-2-btn" onclick="deleteSlot(2)">🗑️</button>
+            </div>
+            <div class="slot-row">
+                <button class="slot-btn" id="slot-3-btn" onclick="handleSlot(3)">Slot 3: Empty</button>
+                <button class="delete-slot-btn" id="delete-3-btn" onclick="deleteSlot(3)">🗑️</button>
+            </div>
+        </div>
+        <button id="close-slots-btn" onclick="closeSlotMenu()">CANCEL</button>
+    </div>
+</div>
+
+<div id="game" class="hidden">
+    <div id="background"></div>
+    
+    <img id="char-left" class="character">
+    <img id="char-center" class="character">
+    <img id="char-right" class="character">
+    
+    <div id="dialogue-box">
+        <p id="dialogue-text"></p>
+        
+        <div id="controls-container">
+            <button id="back-btn" class="control-btn">Back</button>
+            <button id="save-btn" class="control-btn">Save</button>
+            <button id="skip-dialogue-btn" class="control-btn">Skip</button>
+            <button id="main-menu-btn" class="control-btn">Main Menu</button>
+            <button id="next-btn" class="control-btn">Next</button>
+        </div>
+    </div>
+    
+    <div id="hearts-container"></div>
+    <canvas id="gameCanvas" class="hidden"></canvas>
+    
+    <div id="minigame-skip-container" class="hidden">
+        <button id="minigame-skip-btn">SKIP MINIGAME</button>
+    </div>
+</div>
+
+<script src="minigames/circuit-game.js"></script>
+<script src="minigames/circuit-game2.js"></script>
+<script src="minigames/neural-game.js"></script>
+<script src="minigames/maze.js"></script>
+<script src="minigames/neural-pattern.js"></script>
+<script src="minigames/circuit.js"></script>
+<script src="minigames/circuit-game2-connector.js"></script>
+<script src="minigames/neural-connector.js"></script>
+<script src="minigames/maze-connector.js"></script>
+<script src="minigames/neural-pattern-connector.js"></script>
+<script src="minigames/security.js"></script>
+<script src="minigames/security-connector.js"></script>
+<script src="minigames/survival.js"></script>
+<script src="minigames/survival-connector.js"></script>
+<script src="minigames/jigsaw.js"></script>
+<script src="minigames/jigsaw-connector.js"></script>
+<script src="minigames/computer.js"></script>
+<script src="minigames/computer-connector.js"></script>
+<script src="minigames/biometric_hack.js"></script>
+<script src="minigames/biometric_hack-connector.js"></script>
+<script src="minigames/antivirus.js"></script>
+<script src="minigames/antivirus-connector.js"></script>
+<script src="minigames/escape.js"></script>
+<script src="minigames/escape-connector.js"></script>
+<script src="database.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

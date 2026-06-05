@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXIT 404: VIREX – ENTER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* flickering scanlines + glitch background */
+        /* flickering scanlines - LIGHTENED */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 200, 0.05) 0px,
+                rgba(0, 0, 0, 0.15) 1px, /* <-- Much lighter black lines */
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 2;
+            animation: scan 8s linear infinite;
+        }
+
+        /* Edge Vignette - CENTER CLEARED */
+        body::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 40%, #000000 100%);
+            opacity: 0.7; 
+            z-index: 1; 
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 20px; }
+        }
+
+        /* main welcome card */
+        .welcome-container {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            width: 90%;
+            background: rgba(8, 18, 28, 0.85);
+            backdrop-filter: blur(6px);
+            border: 3px solid #00ffcc;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.4), inset 0 0 20px rgba(0, 255, 200, 0.2);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 12px;
+            transition: border-color 0.3s;
+            animation: float-pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes float-pulse {
+            0% { box-shadow: 0 0 30px #00ffcc; }
+            50% { box-shadow: 0 0 60px #00ccaa; }
+            100% { box-shadow: 0 0 30px #00ffcc; }
+        }
+
+        /* glitchy main title */
+        .glitch-wrapper {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .glitch {
+            font-size: clamp(2.8rem, 12vw, 5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #e0f2fe;
+            letter-spacing: 8px;
+            position: relative;
+            text-shadow: 
+                0.05em 0 0 rgba(255, 0, 100, 0.6),
+                -0.05em -0.025em 0 rgba(0, 255, 255, 0.6);
+            animation: glitch-shake 0.3s infinite alternate;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .glitch::before {
+            text-shadow: -0.2em 0 0 cyan;
+            animation: glitch-1 0.8s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            text-shadow: 0.2em 0 0 hotpink;
+            animation: glitch-2 0.8s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% { clip-path: inset(20% 0 30% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(30% 0 40% 0); }
+            60% { clip-path: inset(5% 0 70% 0); }
+            80% { clip-path: inset(50% 0 25% 0); }
+            100% { clip-path: inset(70% 0 5% 0); }
+        }
+
+        @keyframes glitch-2 {
+            0% { clip-path: inset(40% 0 31% 0); }
+            20% { clip-path: inset(10% 0 60% 0); }
+            40% { clip-path: inset(70% 0 5% 0); }
+            60% { clip-path: inset(25% 0 50% 0); }
+            80% { clip-path: inset(80% 0 1% 0); }
+            100% { clip-path: inset(5% 0 70% 0); }
+        }
+
+        @keyframes glitch-shake {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 0); }
+            80% { transform: translate(1px, 1px); }
+            100% { transform: translate(0); }
+        }
+
+        /* tagline */
+        .cyber-tagline {
+            font-size: 1.5rem;
+            color: #9adfff;
+            text-shadow: 0 0 10px #00ccff;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            word-break: break-word;
+            border-bottom: 1px dashed #336688;
+            padding-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* warning / description */
+        .message-box {
+            background: rgba(0, 20, 20, 0.7);
+            border-left: 6px solid #ffaa33;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+            color: #bbffdd;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            box-shadow: 0 0 15px #003333;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .message-box .highlight {
+            color: #ffcc66;
+            font-weight: bold;
+            text-shadow: 0 0 5px #ffaa00;
+        }
+
+        .message-box .glitch-text {
+            color: #66ffcc;
+            font-weight: bold;
+            animation: textflick 2s infinite;
+        }
+
+        @keyframes textflick {
+            0% { opacity: 1; text-shadow: 0 0 5px #0ff; }
+            45% { opacity: 1; text-shadow: 0 0 5px #0ff; }
+            50% { opacity: 0.2; text-shadow: 0 0 2px #0ff; }
+            55% { opacity: 1; text-shadow: 0 0 5px #0ff; }
+            100% { opacity: 1; text-shadow: 0 0 5px #0ff; }
+        }
+
+        /* enter button */
+        .enter-link {
+            display: inline-block;
+            margin: 20px 0 10px;
+            padding: 18px 60px;
+            background: transparent;
+            border: 3px solid #00ffcc;
+            color: #00ffcc;
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 8px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            box-shadow: 0 0 15px #00ffcc;
+            border-radius: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enter-link:hover {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 40px cyan, 0 0 80px #0ff;
+            transform: scale(1.05);
+            border-color: white;
+        }
+
+        .enter-link::before {
+            content: ">>";
+            position: absolute;
+            left: -30px;
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .enter-link:hover::before {
+            left: 15px;
+            opacity: 1;
+            color: black;
+        }
+
+        .enter-link::after {
+            content: "<<";
+            position: absolute;
+            right: -30px;
+            transition: 0.3s;
+            opacity: 0;
+        }
+
+        .enter-link:hover::after {
+            right: 15px;
+            opacity: 1;
+            color: black;
+        }
+
+        /* subtle terminal line */
+        .terminal-prompt {
+            color: #669999;
+            margin-top: 40px;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            border-top: 1px solid #335555;
+            padding-top: 25px;
+        }
+
+        .blink {
+            animation: blink-anime 1.2s step-end infinite;
+        }
+
+        @keyframes blink-anime {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* hidden index redirect simulator (just visual) */
+        .disclaimer {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            color: #335555;
+            font-size: 0.8rem;
+            z-index: 20;
+        }
+
+        /* responsive */
+        @media (max-width: 600px) {
+            .glitch { font-size: 3rem; letter-spacing: 4px; }
+            .enter-link { font-size: 1.5rem; padding: 15px 30px; letter-spacing: 4px; }
+            .message-box { font-size: 1rem; }
+        }
+
+        /* --- NEW ANIMATED BACKGROUND IMAGE --- */
+        /* --- HIGH VISIBILITY BACKGROUND --- */
+        .bg-image {
+            position: absolute;
+            inset: 0;
+            z-index: 0; 
+            background-image: url('assets/backgrounds/welcome.png'); 
+            background-size: cover;
+            background-position: center;
+            filter: brightness(1.2) contrast(1.1) saturate(1.1); /* Brighter start */
+            animation: cyber-breathe 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes cyber-breathe {
+            0% { 
+                transform: scale(1.0); 
+                filter: brightness(1.2) contrast(1.1) saturate(1.1); 
+            }
+            100% { 
+                transform: scale(1.05); 
+                filter: brightness(1.4) contrast(1.2) saturate(1.3) hue-rotate(15deg); /* Even brighter peak */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image"></div>
+    
+    <div class="welcome-container">
+        <div class="glitch-wrapper">
+            <div class="glitch" data-text="EXIT 404">EXIT 404</div>
+            <div style="font-size: 2rem; color: #bb99ff; letter-spacing: 6px; margin-top: -10px;">⋆⍟⋆ VIREX ⋆⍟⋆</div>
+        </div>
+
+        <div class="cyber-tagline">
+            <span class="blink">⫸</span> YOUR CONSCIOUSNESS IS THE KEY <span class="blink">⫷</span>
+        </div>
+
+        <div class="message-box">
+            <p><span class="highlight">>> SYSTEM BOOT SEQUENCE INITIATED</span></p>
+            <p>✧ You are <strong class="glitch-text">John</strong>, the Lead Architect. Your creation, <span style="color:#ff8888;">VIREX</span>, has turned against humanity.</p>
+            <p>✧ Your partners <span style="color:#aaccff;">Alex</span> and <span style="color:#aaffaa;">Max</span> are already under its control. The chip inside your head is a ticking clock.</p>
+            <p>✧ <span style="color:#ffaa66;">Five hearts</span> stand between you and total assimilation. Every minigame, every choice, will shape the future.</p>
+            <p style="margin-top: 15px;"><span class="highlight">»»</span> Four endings await. Only one grants true freedom. <span class="highlight">««</span></p>
+        </div>
+
+        <a href="game.html" class="enter-link" id="enter-game">ENTER</a>
+
+        <div class="terminal-prompt">
+            <span>></span>
+            <span>READY TO CONNECT</span>
+            <span>></span>
+            <span class="blink">_</span>
+        </div>
+
+        <div style="margin-top: 15px; color: #336666; font-size: 0.9rem;">
+            <span>⚠️ </span>PERSONALITY UPLOAD RISK: 94%<span> ⚠️</span>
+        </div>
+    </div>
+
+    <div class="disclaimer">
+        <span>➤➤➤ [ GAUNTLET INTERFACE v.404 ] ➤➤➤</span>
+    </div>
+
+    <script>
+        (function() {
+            const enterBtn = document.getElementById('enter-game');
+            
+            if (enterBtn) {
+                enterBtn.addEventListener('mouseenter', () => {
+                    document.body.style.filter = 'contrast(1.2) brightness(1.1)';
+                });
+                enterBtn.addEventListener('mouseleave', () => {
+                    document.body.style.filter = 'none';
+                });
+            }
+
+            console.log('%c🔓 WELCOME TO EXIT 404: VIREX 🔓', 'font-size:16px; background:black; color:#00ffcc; padding:4px;');
+            console.log('%c>> You stand at the threshold. Proceed to game.html to begin your descent.', 'color:#ffaa66;');
+        })();
+    </script>
+</body>
+</html>
